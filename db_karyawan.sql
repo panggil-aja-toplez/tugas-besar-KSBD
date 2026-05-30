@@ -1,6 +1,6 @@
-SELECT * FROM db_karyawan.karyawan;
+CREATE DATABASE db_karyawan;
 
-USE db_karyawan
+USE db_karyawan;
 
 CREATE TABLE `jabatan` (
   `id_jabatan` int NOT NULL AUTO_INCREMENT,
