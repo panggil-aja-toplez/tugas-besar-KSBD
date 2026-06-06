@@ -44,6 +44,6 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 iNSERT INTO jabatan (nama_jabatan, gaji_pokok) VALUES ('Manager IT', 15000000), ('Staff Developer', 8000000);
-INSERT INTO karyawan (nama, email, no_telp, alamat, id_jabatan,) 
+INSERT INTO karyawan (nama, email, no_telp, alamat, id_jabatan) 
 VALUES ('Budi Sudarsono', 'budi@email.com', '0812345678', 'Jakarta', 1),
        ('Siti Rahma', 'siti@email.com', '0877654321', 'Tangerang', 2);
