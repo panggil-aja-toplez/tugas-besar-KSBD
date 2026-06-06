@@ -107,47 +107,50 @@ app.delete('/api/karyawan/:id', (req, res) => {
     });
 });
 
-// 7. API INSERT JABATAN
-app.post('/api/jabatan', (req, res) => {
-    const { nama_jabatan, gaji_pokok } = req.body;
+// JABATAN
+app.get('/api/jabatan', (req, res) => {
+    const search = req.query.search || '';
 
-    const query = "INSERT INTO jabatan (nama_jabatan, gaji_pokok) VALUES (?, ?)";
-    db.query(query, [nama_jabatan, gaji_pokok], (err, result) => {
+    const query = `
+        SELECT id_jabatan, nama_jabatan, gaji_pokok
+        FROM jabatan
+        WHERE nama_jabatan LIKE ? OR id_jabatan LIKE ?
+    `;
+
+    db.query(query, [`%${search}%`, `%${search}%`], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.json({ 
-            success: true,
-            message: "Data jabatan baru berhasil ditambahkan!", 
-            id_jabatan: result.insertId 
-        });
+        res.json(results); 
     });
 });
 
-// 8. INSERT KLIEN
-app.post('/api/klien', (req, res) => {
-    const { nama_perusahaan, nama_kontak, email } = req.body;
+// KLIEN 
+app.get('/api/klien', (req, res) => {
+    const search = req.query.search || '';
 
-    const query = "INSERT INTO klien (nama_perusahaan, nama_kontak, email) VALUES (?, ?, ?)";
-    db.query(query, [nama_perusahaan, nama_kontak, email], (err, result) => {
+    const query = `
+        SELECT id_klien, nama_perusahaan, nama_kontak, email
+        FROM klien
+        WHERE nama_perusahaan LIKE ? OR nama_kontak LIKE ? OR id_klien LIKE ?
+    `;
+
+    db.query(query, [`%${search}%`, `%${search}%`, `%${search}%`], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.json({ 
-            success: true,
-            message: "Data klien baru berhasil ditambahkan!", 
-            id_klien: result.insertId 
-        });
+        res.json(results);
     });
 });
 
-// 9. PENEMPATAN INSERT 
-app.post('/api/penempatan', (req, res) => {
-    const { nama_lokasi, wilayah } = req.body; 
+// PENEMPATAN 
+app.get('/api/penempatan', (req, res) => {
+    const search = req.query.search || '';
 
-    const query = "INSERT INTO penempatan (nama_lokasi, wilayah) VALUES (?, ?)";
-    db.query(query, [nama_lokasi, wilayah], (err, result) => {
+    const query = `
+        SELECT id_penempatan, nama_lokasi, wilayah
+        FROM penempatan
+        WHERE nama_lokasi LIKE ? OR wilayah LIKE ? OR id_penempatan LIKE ?
+    `;
+
+    db.query(query, [`%${search}%`, `%${search}%`, `%${search}%`], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.json({ 
-            success: true,
-            message: "Data lokasi penempatan baru berhasil ditambahkan!", 
-            id_penempatan: result.insertId 
-        });
+        res.json(results);
     });
 });
