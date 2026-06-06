@@ -106,3 +106,48 @@ app.delete('/api/karyawan/:id', (req, res) => {
         res.json({ message: "Data karyawan berhasil dihapus!" });
     });
 });
+
+// 7. API INSERT JABATAN
+app.post('/api/jabatan', (req, res) => {
+    const { nama_jabatan, gaji_pokok } = req.body;
+
+    const query = "INSERT INTO jabatan (nama_jabatan, gaji_pokok) VALUES (?, ?)";
+    db.query(query, [nama_jabatan, gaji_pokok], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ 
+            success: true,
+            message: "Data jabatan baru berhasil ditambahkan!", 
+            id_jabatan: result.insertId 
+        });
+    });
+});
+
+// 8. INSERT KLIEN
+app.post('/api/klien', (req, res) => {
+    const { nama_perusahaan, nama_kontak, email } = req.body;
+
+    const query = "INSERT INTO klien (nama_perusahaan, nama_kontak, email) VALUES (?, ?, ?)";
+    db.query(query, [nama_perusahaan, nama_kontak, email], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ 
+            success: true,
+            message: "Data klien baru berhasil ditambahkan!", 
+            id_klien: result.insertId 
+        });
+    });
+});
+
+// 9. PENEMPATAN INSERT 
+app.post('/api/penempatan', (req, res) => {
+    const { nama_lokasi, wilayah } = req.body; 
+
+    const query = "INSERT INTO penempatan (nama_lokasi, wilayah) VALUES (?, ?)";
+    db.query(query, [nama_lokasi, wilayah], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ 
+            success: true,
+            message: "Data lokasi penempatan baru berhasil ditambahkan!", 
+            id_penempatan: result.insertId 
+        });
+    });
+});
