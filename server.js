@@ -128,9 +128,9 @@ app.get('/api/klien', (req, res) => {
     const search = req.query.search || '';
 
     const query = `
-        SELECT id_klien, nama_perusahaan, nama_kontak, email
+        SELECT id_klien, nama_klien
         FROM klien
-        WHERE nama_perusahaan LIKE ? OR nama_kontak LIKE ? OR id_klien LIKE ?
+        WHERE nama_klien LIKE ? OR id_klien LIKE ?
     `;
 
     db.query(query, [`%${search}%`, `%${search}%`, `%${search}%`], (err, results) => {
@@ -144,9 +144,9 @@ app.get('/api/penempatan', (req, res) => {
     const search = req.query.search || '';
 
     const query = `
-        SELECT id_penempatan, nama_lokasi, wilayah
+        SELECT id_kota, nama_kota
         FROM penempatan
-        WHERE nama_lokasi LIKE ? OR wilayah LIKE ? OR id_penempatan LIKE ?
+        WHERE nama_kota LIKE ? OR id_kota LIKE ?
     `;
 
     db.query(query, [`%${search}%`, `%${search}%`, `%${search}%`], (err, results) => {
