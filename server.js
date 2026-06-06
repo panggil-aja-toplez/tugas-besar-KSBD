@@ -81,7 +81,7 @@ app.post('/api/login', (req, res) => {
 
 // 5. API TAMBAH KARYAWAN (CREATE)
 app.post('/api/karyawan', (req, res) => {
-    const { nama, email, no_telp, alamat, id_jabatan } = req.body;
+    const { nama, email, no_telp, alamat, id_jabatan, id_klien,  } = req.body;
 
     const query = `
         INSERT INTO karyawan (nama, email, no_telp, alamat, id_jabatan) 
