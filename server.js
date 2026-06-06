@@ -133,7 +133,7 @@ app.get('/api/klien', (req, res) => {
         WHERE nama_klien LIKE ? OR id_klien LIKE ?
     `;
 
-    db.query(query, [`%${search}%`, `%${search}%`, `%${search}%`], (err, results) => {
+    db.query(query, [`%${search}%`, `%${search}%`], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(results);
     });
@@ -149,7 +149,7 @@ app.get('/api/penempatan', (req, res) => {
         WHERE nama_kota LIKE ? OR id_kota LIKE ?
     `;
 
-    db.query(query, [`%${search}%`, `%${search}%`, `%${search}%`], (err, results) => {
+    db.query(query, [`%${search}%`, `%${search}%`], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(results);
     });
