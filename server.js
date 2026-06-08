@@ -23,16 +23,18 @@ db.connect((err) => {
 // 2. API: TAMPILKAN SEMUA KARYAWAN & FITUR SEARCH
 app.get('/api/karyawan', (req, res) => {
     const search = req.query.search || '';
-    
+
     // Query dengan JOIN ke tabel jabatan agar nama jabatannya muncul
     const query = `
-        SELECT k.id_karyawan, k.nama, k.email, j.nama_jabatan 
+        SELECT k.id_karyawan, k.nama, k.email, j.nama_jabatan, c.nama_klien, p.nama_kota 
         FROM karyawan k
-        JOIN jabatan j ON k.id_jabatan = j.id_jabatan
+        INNER JOIN jabatan j ON k.id_jabatan = j.id_jabatan
+        INNER JOIN klien c ON k.id_klien = c.id_klien
+        INNER JOIN penempatan p ON k.id_penempatan = p.id_kota
         WHERE k.nama LIKE ? OR k.id_karyawan LIKE ?
     `;
 
-    db.query(query, [`%${search}%`, `%${search}%`], (err, results) => {
+    db.query(query, [%${search}%, %${search}%], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(results); // Data dikirim ke React dalam bentuk JSON
     });
@@ -43,9 +45,11 @@ app.get('/api/karyawan/:id', (req, res) => {
     const idKaryawan = req.params.id;
 
     const query = `
-        SELECT k.*, j.nama_jabatan, j.gaji_pokok 
+        SELECT k.*, j.nama_jabatan, j.gaji_pokok, c.nama_klien, p.nama_kota
         FROM karyawan k
-        JOIN jabatan j ON k.id_jabatan = j.id_jabatan
+        INNER JOIN jabatan j ON k.id_jabatan = j.id_jabatan
+        INNER JOIN klien c ON k.id_klien = c.id_klien
+        INNER JOIN penempatan p ON k.id_penempatan = p.id_kota
         WHERE k.id_karyawan = ?
     `;
 
@@ -56,39 +60,16 @@ app.get('/api/karyawan/:id', (req, res) => {
     });
 });
 
-// Jalankan Server di Port 5000
-app.listen(5000, () => {
-    console.log('Backend berjalan di http://localhost:5000');
-});
-
-// 4. API LOGIN ADMIN
-app.post('/api/login', (req, res) => {
-    const { username, password } = req.body; // Menerima input dari React
-
-    const query = "SELECT * FROM admin WHERE username = ? AND password = ?";
-    db.query(query, [username, password], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        
-        if (results.length > 0) {
-            // Jika akun cocok, kirim status sukses ke React
-            res.json({ success: true, message: "Login Berhasil!", admin: results[0].username });
-        } else {
-            // Jika salah
-            res.status(401).json({ success: false, message: "Username atau Password salah!" });
-        }
-    });
-});
-
 // 5. API TAMBAH KARYAWAN (CREATE)
 app.post('/api/karyawan', (req, res) => {
-    const { nama, email, no_telp, alamat, id_jabatan, id_klien, id_penempatan} = req.body;
+    const { id_karyawan, nama, email, no_telp, alamat, id_jabatan, id_klien, id_penempatan } = req.body;
 
     const query = `
-        INSERT INTO karyawan (nama, email, no_telp, alamat, id_jabatan, id_klien, id_penempatan) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO karyawan (id_karyawan,nama, email, no_telp, alamat, id_jabatan, id_klien, id_penempatan) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    db.query(query, [nama, email, no_telp, alamat, id_jabatan], (err, result) => {
+    db.query(query, [id_karyawan, nama, email, no_telp, alamat, id_jabatan, id_klien, id_penempatan], (err, result) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json({ message: "Data karyawan berhasil ditambahkan!", id: result.insertId });
     });
